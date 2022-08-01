@@ -1,57 +1,25 @@
-import { useState } from "react";
-import SearchonStaticdata from "./SearchonStaticdata";
+import React from "react";
+import Select from "react-select";
 
-let names = [
-  "Shea",
+import { colourOptions } from "./Data";
 
-  "Ewing",
+const colourStyles = {
+  control: (base) => ({
+    ...base,
+    background: "#152033",
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: "#fff",
+  }),
+  input: (base) => ({
+    ...base,
+    color: "#fff",
+  }),
+};
 
-  "Yang",
-
-  "Mcintosh",
-
-  "Castillo",
-
-  "Cunningham",
-
-  "Johnston",
-
-  "Mckay",
-
-  "Roberson",
-
-  "Perez",
-
-  "Dudley",
-
-  "Wood",
-];
-
-function App() {
-  const [searchValue, setSearchValue] = useState("");
-
-  return (
-    <div className="App">
-      <h2>Search filtering</h2>
-
-      <input
-        type="text"
-        name="search"
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-      />
-
-      <ul>
-        {names
-
-          .filter((name) => name.match(new RegExp(searchValue, "i")))
-
-          .map((name) => {
-            return <li key={name}>{name} </li>;
-          })}
-      </ul>
-    </div>
-  );
-}
+const SearchwithDynamicdata = ({ name }) => (
+  <Select label="Single select" options={colourOptions} styles={colourStyles} />
+);
 
 export default SearchwithDynamicdata;

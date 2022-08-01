@@ -69,9 +69,14 @@
 .user-name {
   color: blue;
 }
-
+.word-grey{
+  color: yellow
+}
 .user-age {
   margin-left: auto;
 }
 
 
+.search-content{
+  margin-top:20px;
+}

@@ -1,37 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import USERS from "./Data";
+import paraText from "./NewData";
 import "./App.css";
-import Highlighter from "react-highlight-words";
+import Data from "./Data";
 
 function SearchonStaticdata() {
+  const [userData, setUserData] = useState(USERS);
+  const [InfoData, setInfoData] = useState([]);
+  const [ClickInfoData, setClickInfoData] = useState("");
+
   // the value of the search field
   const [name, setName] = useState("");
-  const [userData, setUserData] = useState(USERS);
 
   // the search result
 
-  const [foundUsers, setFoundUsers] = useState("");
+  const [foundUsers, setFoundUsers] = useState([]);
   const [inputLength, setinputLength] = useState("");
+  const [temp, setTemp] = useState([]);
 
   const filter = (e) => {
     const keyword = e.target.value;
-
     if (keyword !== "") {
       setinputLength(keyword);
-      const results = userData.filter((user) => {
+      let results = userData.filter((user) => {
         return user.name.toLowerCase().startsWith(keyword.toLowerCase());
-        // Use the toLowerCase() method to make it case-insensitive
       });
-
       if (inputLength.length >= 2) {
         setFoundUsers(results);
-      } else {
-        setFoundUsers("");
       }
     }
     setName(keyword);
   };
 
+  const Getdata = (info) => {
+    debugger;
+    setInfoData(paraText);
+    setClickInfoData(info.name);
+  };
+
+  useEffect(() => {
+    if (name.length > 0) {
+      var searchedPara = document.getElementById("divdata");
+      var data = InfoData[0].split(" ");
+      var ClickInfoSplit = ClickInfoData.split(" ");
+      var newHTML = "";
+      data.map((word) => {
+        debugger;
+        if (ClickInfoSplit.indexOf(word) > -1) {
+          newHTML += "<b>" + word + "</b> ";
+        } else {
+          newHTML += word + " ";
+        }
+      });
+
+      //var regex = RegExp(words, "gi"); // case insensitive
+      //var replacement = "<b>" + words + "</b>";
+      //var newHTML = searchedPara.innerHTML.replace(regex, replacement);
+      searchedPara.innerHTML = newHTML;
+    }
+  }, [ClickInfoData]);
   return (
     <div className="container">
       <input
@@ -41,25 +68,39 @@ function SearchonStaticdata() {
         className="input"
         placeholder="Filter"
       />
-
-      <div className="user-list">
-        {name && foundUsers && foundUsers.length > 0 ? (
-          foundUsers.map((user) => (
-            // <li key={user.id} className="user">
-
-            <li key={user.id} className="user">
-              {/* <span className="user-id">{user.id}</span> */}
-
-              <span className={user.name.length >= 3 ? "user-name" : "user"}>
-                {user.name}
-              </span>
-
-              {/* <span className="user-age">{user.age} year old</span> */}
-            </li>
-          ))
-        ) : (
-          <h1>No results found!</h1>
-        )}
+      <div class="report_info">
+        <div className="user-list">
+          {name && foundUsers.length >= 2 ? (
+            foundUsers.map((user) => (
+              // <li key={user.id} className="user">
+              <li key={user.id} className="user" onClick={() => Getdata(user)}>
+                {/* <span className="user-id">{user.id}</span> */}
+                <span className="user-name">{user.name}</span>
+                {/* <span className="word-grey">{user.name}</span> */}
+                {/* <span className="user-age">{user.age} year old</span> */}
+              </li>
+            ))
+          ) : (
+            // <select>
+            //   {foundUsers.map((user) => (
+            //     <option
+            //       key={user.id}
+            //       value={user.name}
+            //       className="user"
+            //       onClickCapture={() => Getdata(user)}
+            //     >
+            //       {user.name}
+            //     </option>
+            //   ))}
+            // </select>
+            <h1>No results found!</h1>
+          )}
+        </div>
+      </div>
+      <div id="divdata">
+        {inputLength.length >= 2 && InfoData != null && InfoData != ""
+          ? InfoData
+          : ""}
       </div>
     </div>
   );
